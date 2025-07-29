@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+  <meta charset="UTF-8">
+  <title>Organisation Bearbeiten</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+    }
+    .container {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        width: 50%;
+        text-align: center;
+    }
+    h1, h2 {
+        margin-bottom: 15px;
+        color: #333;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+    }
+    th {
+        background-color: #007bff;
+        color: white;
+    }
+    label {
+        display: block;
+        margin-top: 10px;
+        font-weight: bold;
+        text-align: left;
+    }
+    input, textarea, select {
+        width: calc(100% - 16px);
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        display: block;
+    }
+    button, .btn {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: bold;
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+    }
+    button:hover, .btn:hover {
+        background-color: #0056b3;
+    }
+    .btn-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Organisation Bearbeiten</h1>
+  <form th:action="@{'/organisation_edit/' + ${organisation.id}}" method="post" enctype="multipart/form-data">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" th:value="${organisation.name}" required />
+
+    <label for="beschreibung">Beschreibung:</label>
+    <textarea id="beschreibung" name="beschreibung" rows="5" th:text="${organisation.beschreibung}"></textarea>
+
+    <label for="bild">Bild:</label>
+    <input type="file" id="bild" name="bild" />
+
+    <label for="kontakt">Kontakt:</label>
+    <input type="text" id="kontakt" name="kontakt" th:value="${organisation.kontakt}" />
+
+    <label for="socialmedia">Social Media:</label>
+    <input type="text" id="socialmedia" name="socialmedia" th:value="${organisation.socialmedia}" />
+
+    <div sec:authorize="hasRole('ROLE_ADMIN')">
+      <label for="status">Status:</label>
+      <select id="status" name="status" th:value="${organisation.status}">
+        <option value="PENDING" th:selected="${organisation.status == 'PENDING'}">Pending</option>
+        <option value="APPROVED" th:selected="${organisation.status == 'APPROVED'}">Approved</option>
+        <option value="REJECTED" th:selected="${organisation.status == 'REJECTED'}">Rejected</option>
+      </select>
+    </div>
+
+    <label for="approved">Genehmigt:</label>
+    <input type="checkbox" id="approved" name="approved" th:checked="${organisation.approved}" />
+
+    <button type="submit">Änderungen speichern</button>
+  </form>
+
+  <h2>Teilnehmer hinzufügen</h2>
+  <form th:action="@{'/organisation_edit/' + ${organisation.id} + '/add_user_manual'}" method="post">
+    <label for="manualUser">Name des Teilnehmers:</label>
+    <input type="text" id="manualUser" name="username" required />
+    <button type="submit">Teilnehmer hinzufügen</button>
+  </form>
+
+</div>
+</body>
+</html>

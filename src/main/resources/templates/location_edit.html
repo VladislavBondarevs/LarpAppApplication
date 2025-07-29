@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <title>Edit Location</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 50%;
+            text-align: center;
+        }
+        h1, h2 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+            text-align: left;
+        }
+        input, textarea, select {
+            width: calc(100% - 16px);
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            display: block;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px;
+            margin-top: 20px;
+            width: 100%;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<h1>Edit Location</h1>
+<div class="container">
+    <form th:action="@{/location_edit/{id}(id=${location.id})}" method="post" enctype="multipart/form-data">
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" th:value="${location.name}" required />
+
+        <label for="beschreibung">Beschreibung:</label>
+        <textarea id="beschreibung" name="beschreibung" th:text="${location.beschreibung}"></textarea>
+
+        <label for="telefonnummer">Telefonnummer:</label>
+        <textarea id="telefonnummer" name="telefonnummer" th:text="${location.telefonnummer}"></textarea>
+
+        <label for="email">E-Mail:</label>
+        <textarea id="email" name="email" th:text="${location.email}"></textarea>
+
+        <label for="mainImage">Hauptbild ändern:</label>
+        <input type="file" id="mainImage" name="mainImage" accept="image/*" />
+
+        <label for="bildergallerie">Galerie ändern:</label>
+        <input type="file" id="bildergallerie" name="bildergallerie" accept="image/*" multiple />
+
+        <h3>Aktuelle Galeriebilder</h3>
+        <div th:each="photo : ${location.bildergallerie}">
+            <img th:src="@{'/' + ${photo}}" alt="Galeriebild" style="width: 150px; height: auto; margin-right: 10px;">
+            <input type="hidden" name="existingGalleryImages" th:value="${photo}" />
+        </div>
+        <br>
+        <label for="adresse">Adresse:</label>
+        <input type="text" id="adresse" name="adresse" th:value="${location.adresse}" />
+
+        <label for="anfahrt">Anfahrt:</label>
+        <textarea id="anfahrt" name="anfahrt" th:text="${location.anfahrt}"></textarea>
+
+        <label for="unterkunft">Unterkunft:</label>
+        <textarea id="unterkunft" name="unterkunft" th:text="${location.unterkunft}"></textarea>
+
+        <label for="anzeigen">Anzeigen:</label>
+        <input type="checkbox" id="anzeigen" name="anzeigen" th:checked="${location.anzeigen}" />
+
+        <button type="submit">Speichern</button>
+    </form>
+</div>
+</body>
+</html>

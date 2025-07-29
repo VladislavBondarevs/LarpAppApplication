@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+  <meta charset="UTF-8">
+  <title>Organisation Details</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+    }
+    .table-container {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        width: 600px;
+        text-align: center;
+    }
+    h1, h2 {
+        margin-bottom: 15px;
+        color: #333;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+    }
+    th {
+        background-color: #007bff;
+        color: white;
+    }
+    button, .btn {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 8px;
+        border-radius: 4px;
+        cursor: pointer;
+        text-decoration: none;
+    }
+    button:hover, .btn:hover {
+        background-color: #0056b3;
+    }
+    img {
+        max-width: 200px;
+        border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+<div class="table-container">
+  <h1>Organisation Details</h1>
+  <table>
+    <tr>
+      <th>ID:</th>
+      <td th:text="${organisation.id}"></td>
+    </tr>
+    <tr>
+      <th>Name:</th>
+      <td th:text="${organisation.name}"></td>
+    </tr>
+    <tr>
+      <th>Beschreibung:</th>
+      <td th:text="${organisation.beschreibung}"></td>
+    </tr>
+    <tr>
+      <th>Kontakt:</th>
+      <td th:text="${organisation.kontakt}"></td>
+    </tr>
+    <tr>
+      <th>Social Media:</th>
+      <td th:text="${organisation.socialmedia}"></td>
+    </tr>
+    <tr>
+      <th>Status:</th>
+      <td th:text="${organisation.status}" sec:authorize="hasAnyRole('ADMIN', 'ORGANISATOR')"></td>
+    </tr>
+    <tr>
+      <th>Aktuelles Bild:</th>
+      <td>
+        <img th:src="@{'/' + ${organisation.photoPath}}" alt="Organisation Image" />
+      </td>
+    </tr>
+  </table>
+
+  <h2>Users in this Organisation</h2>
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Username</th>
+      <th>Email</th>
+      <th>Role</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+      <td th:text="${user.id}" sec:authorize="hasAnyRole('ADMIN', 'ORGANISATOR')"></td>
+      <td th:text="${user.username}" ></td>
+      <td th:text="${user.email}" sec:authorize="hasAnyRole('ADMIN', 'ORGANISATOR')"></td>
+      <td th:text="${user.role}" sec:authorize="hasAnyRole('ADMIN', 'ORGANISATOR')"></td>
+    </tr>
+    </tbody>
+  </table>
+  <br>
+  <a th:href="@{'/organisations_list'}" class="btn">
+    Zurück zur Liste
+  </a>
+</div>
+</body>
+</html>

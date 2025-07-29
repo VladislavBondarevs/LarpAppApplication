@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Location</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .form-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+            text-align: left;
+        }
+        input, textarea {
+            width: calc(100% - 16px);
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            display: block;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px;
+            margin-top: 20px;
+            width: 100%;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <h1>Create New Location</h1>
+    <form th:action="@{/register_location}" method="post" enctype="multipart/form-data">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required />
+
+        <label for="beschreibung">Beschreibung:</label>
+        <textarea id="beschreibung" name="beschreibung"></textarea>
+
+        <label for="mainImage">Main Image:</label>
+        <input type="file" id="mainImage" name="mainImage" accept="image/*" required>
+
+        <label for="bildergallerie">Image Gallery:</label>
+        <input type="file" id="bildergallerie" name="bildergallerie" accept="image/*" multiple>
+
+        <label for="telefonnummer">Telefonnummer:</label>
+        <input type="text" id="telefonnummer" name="telefonnummer" />
+
+        <label for="email">E-Mail:</label>
+        <input type="text" id="email" name="email" />
+
+        <label for="adresse">Address:</label>
+        <input type="text" id="adresse" name="adresse" />
+
+        <label for="anfahrt">Anfahrt:</label>
+        <textarea id="anfahrt" name="anfahrt"></textarea>
+
+        <label for="unterkunft">Unterkunft:</label>
+        <textarea id="unterkunft" name="unterkunft"></textarea>
+
+        <button type="submit">Create</button>
+    </form>
+</div>
+</body>
+</html>

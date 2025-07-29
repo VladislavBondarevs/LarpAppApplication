@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <title>Event-Liste</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .table-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 80%;
+            max-width: 1200px;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+            vertical-align: middle;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+        }
+        button, .btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+        }
+        button:hover, .btn:hover {
+            background-color: #0056b3;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        form {
+            display: inline;
+        }
+    </style>
+</head>
+<body>
+<div class="table-container">
+    <h1>Liste der Events</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Bezeichnung</th>
+            <th>Beschreibung</th>
+            <th>Startdatum</th>
+            <th>Enddatum</th>
+            <th>Status</th>
+            <th>Location</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="event : ${events}">
+            <td th:text="${event.id}"></td>
+            <td th:text="${event.bezeichnung}"></td>
+            <td th:text="${event.beschreibung}"></td>
+            <td th:text="${#temporals.format(event.datumVon, 'yyyy-MM-dd')}"></td>
+            <td th:text="${#temporals.format(event.datumBis, 'yyyy-MM-dd')}"></td>
+            <td th:text="${event.status}"></td>
+            <td>
+             <span th:if="${event.location != null}">
+        <a th:href="@{/location_view/{locationId}(locationId=${event.location.id})}" th:text="${event.location.name}"></a>
+    </span>
+                <span th:if="${event.location == null}">
+        Keine Location
+    </span>
+            </td>
+            <td>
+                <div class="btn-container">
+                    <a th:href="@{'/event_view/' + ${event.id}}" class="btn">View</a>
+                    <a th:href="@{'/event_edit/' + ${event.id}}" class="btn" sec:authorize="hasAnyRole('ADMIN', 'ORGANISATOR')">Edit</a>
+                    <form th:action="@{/event/{eventId}/delete(eventId=${event.id})}" method="post" sec:authorize="hasRole('ADMIN')">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a href="/register_event" class="btn" sec:authorize="hasAnyRole('ADMIN', 'ORGANISATOR')">Event erstellen</a>
+</div>
+</body>
+</html>

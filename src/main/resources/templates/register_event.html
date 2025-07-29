@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Register New Event</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .form-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+            text-align: left;
+        }
+        input, textarea {
+            width: calc(100% - 16px);
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            display: block;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px;
+            margin-top: 20px;
+            width: 100%;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <h1>Register New Event</h1>
+    <form th:action="@{'/register_event'}" th:object="${eventDto}" method="post" enctype="multipart/form-data">
+        <label for="bezeichnung">Name:</label>
+        <input type="text" id="bezeichnung" th:field="*{bezeichnung}" placeholder="Event Name" required />
+
+        <label for="beschreibung">Description:</label>
+        <textarea id="beschreibung" th:field="*{beschreibung}" placeholder="Event Description"></textarea>
+
+        <label for="mainImage">Main Image:</label>
+        <input type="file" id="mainImage" name="mainImage" accept="image/*" required>
+
+        <label for="bildergallerie">Image Gallery:</label>
+        <input type="file" id="bildergallerie" name="bildergallerie" accept="image/*" multiple>
+
+        <label for="datumVon">Startdatum:</label>
+        <input type="datetime-local" id="datumVon" name="datumVon"
+               th:value="${eventDto != null and eventDto.datumVon != null ? #temporals.format(eventDto.datumVon, 'yyyy-MM-dd''T''HH:mm') : ''}" required />
+
+        <label for="datumBis">Enddatum:</label>
+        <input type="datetime-local" id="datumBis" name="datumBis"
+               th:value="${eventDto != null and eventDto.datumBis != null ? #temporals.format(eventDto.datumBis, 'yyyy-MM-dd''T''HH:mm') : ''}" required />
+
+        <label for="eventAbhangigeAnfahrt">Dependent Travel:</label>
+        <input type="text" id="eventAbhangigeAnfahrt" th:field="*{eventAbhangigeAnfahrt}" />
+
+        <label for="eventAbhangigeUnterkunft">Dependent Accommodation:</label>
+        <input type="text" id="eventAbhangigeUnterkunft" th:field="*{eventAbhangigeUnterkunft}" />
+
+        <label for="typ">Type (Waffenfrei / Airsoft / NERF / Sonstiges):</label>
+        <input type="text" id="typ" th:field="*{typ}" required />
+
+        <label for="zeitspanne">Duration:</label>
+        <input type="text" id="zeitspanne" th:field="*{zeitspanne}" />
+
+        <label for="genre">Genre:</label>
+        <input type="text" id="genre" th:field="*{genre}" />
+
+        <button type="submit">Register Event</button>
+    </form>
+    <a th:href="@{'/event_list'}">Back to Events</a>
+</div>
+</body>
+</html>

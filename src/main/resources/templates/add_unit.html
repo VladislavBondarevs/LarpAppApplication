@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Unit hinzufügen</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+    }
+    .container {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        width: 50%;
+        text-align: center;
+    }
+    h1 {
+        margin-bottom: 15px;
+        color: #333;
+    }
+    label {
+        display: block;
+        margin-top: 10px;
+        font-weight: bold;
+        text-align: left;
+    }
+    input, textarea, select {
+        width: calc(100% - 16px);
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        display: block;
+    }
+    button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 12px;
+        margin-top: 20px;
+        width: 100%;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+    button:hover {
+        background-color: #0056b3;
+    }
+  .btn-back {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    width: 200px;
+    text-align: center;
+    display: block;
+    margin: 20px auto 0;
+}
+    .btn-back:hover {
+        background-color: #545b62;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Unit hinzufügen</h1>
+  <form th:action="@{'/event_edit/' + ${event.id} + '/add_unit'}" method="post" enctype="multipart/form-data">
+    <label for="unitName">Name:</label>
+    <input type="text" id="unitName" name="unitName" placeholder="Name des Units" required />
+
+    <label for="unitCapacity">Capacity:</label>
+    <input type="number" id="unitCapacity" name="unitCapacity" placeholder="Capacity" required />
+
+    <label for="beschreibung">Beschreibung:</label>
+    <textarea id="beschreibung" name="beschreibung" placeholder="Beschreibung der Unit" required></textarea>
+
+    <label for="fraktionId">Fraktion:</label>
+    <select id="fraktionId" name="fraktionId">
+      <option value="">-- Keine Fraktion --</option>
+      <option th:each="fraktion : ${fraktionen}"
+              th:value="${fraktion.id}"
+              th:text="${fraktion.name}"></option>
+    </select>
+
+    <label for="file">Photo:</label>
+    <input type="file" id="file" name="file" />
+
+    <button type="submit">Hinzufügen</button>
+  </form>
+  <a th:href="@{'/event_edit/' + ${event.id}}" class="btn-back">Zurück</a>
+</div>
+</body>
+</html>

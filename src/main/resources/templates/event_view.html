@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+  <title>Event Details</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+    }
+    .table-container {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        width: 80%;
+        max-width: 1200px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+        vertical-align: middle;
+    }
+    th {
+        background-color: #007bff;
+        color: white;
+    }
+    .btn-container {
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+    }
+    button, .btn {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: bold;
+        width: 150px;
+        text-align: center;
+    }
+    button:hover, .btn:hover {
+        background-color: #0056b3;
+    }
+    .btn-danger {
+        background-color: #dc3545;
+    }
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+    form {
+        display: inline;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+    }
+    .gallery {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+    .gallery img {
+        width: 200px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+    .button-list {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+  </style>
+</head>
+<body>
+<h1>Event Details</h1>
+<div class="table-container">
+  <table>
+    <tr>
+      <th>Name:</th>
+      <td th:text="${event.bezeichnung}"></td>
+    </tr>
+    <tr>
+      <th>Beschreibung:</th>
+      <td th:text="${event.beschreibung}"></td>
+    </tr>
+    <tr>
+      <th>Organisation</th>
+      <td th:text="${organisation.name}"></td>
+    </tr>
+    <tr>
+      <th>Anfang:</th>
+      <td th:text="${#temporals.format(event.datumVon, 'dd.MM.yyyy HH:mm')}"></td>
+    </tr>
+    <tr>
+      <th>Endung:</th>
+      <td th:text="${#temporals.format(event.datumBis, 'dd.MM.yyyy HH:mm')}"></td>
+    </tr>
+    <tr>
+      <th sec:authorize="hasRole('ADMIN')">Access Code:</th>
+      <td th:text="${event.accessCode}" sec:authorize="hasRole('ADMIN')"></td>
+    </tr>
+    <tr>
+      <th sec:authorize="hasRole('ADMIN')">Status:</th>
+      <td th:text="${event.status}" sec:authorize="hasRole('ADMIN')"></td>
+    </tr>
+  </table>
+</div>
+
+<h2>Event Foto</h2>
+<div>
+  <img th:src="@{'/' + ${event.photoPath}}" alt="Event Image">
+</div>
+
+<h2>Event Foto Galerie</h2>
+<div class="gallery" th:if="${bildergallerie != null and !bildergallerie.isEmpty()}">
+  <div th:each="image : ${bildergallerie}">
+    <img th:src="@{'/uploads/' + ${image}}" alt="Event Bild">
+  </div>
+</div>
+<div th:if="${bildergallerie == null or bildergallerie.isEmpty()}">
+  <p>Keine Bilder verfügbar.</p>
+</div>
+
+<h2>Weitere Informationen</h2>
+<div class="button-list">
+  <a th:href="@{'/event_edit/' + ${event.id} + '/fraktion_info'}" class="btn">Fraktion Info</a>
+  <a th:href="@{'/event_edit/' + ${event.id} + '/sondercharakter_info'}" class="btn">Sondercharakter Info</a>
+</div>
+
+<h2>Liste der Benutzer für dieses Event</h2>
+<div class="table-container">
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Benutzername</th>
+      <th sec:authorize="hasRole('ADMIN')">Aktionen</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+      <td th:text="${user.id}"></td>
+      <td th:text="${user.username}"></td>
+      <td>
+        <form th:action="@{/event_view/{id}/remove_user(id=${event.id}, userId=${user.id})}" method="post" sec:authorize="hasRole('ADMIN')">
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+      </td>
+    </tr>
+    <tr th:if="${#lists.isEmpty(users)}">
+      <td colspan="3">Keine Benutzer vorhanden.</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<a th:href="@{'/event_list'}" class="btn">Zurück zur Liste</a>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Sondercharakter hinzufügen</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 50%;
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+            text-align: left;
+        }
+        input, textarea, select {
+            width: calc(100% - 16px);
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            display: block;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px;
+            margin-top: 20px;
+            width: 100%;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+      .btn-back {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    width: 200px;
+    text-align: center;
+    display: block;
+    margin: 20px auto 0;
+}
+        .btn-back:hover {
+            background-color: #545b62;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Neuen Sondercharakter hinzufügen</h1>
+
+    <!-- Hauptformular für die Eingabe und Datei-Upload -->
+    <form th:action="@{'/event_edit/' + ${event.id} + '/add_sondercharakter'}" method="post" enctype="multipart/form-data">
+        <!-- Eingabe für den Namen -->
+        <label for="name">Name des Sondercharakters:</label>
+        <input type="text" id="name" name="name" placeholder="Name des Sondercharakters" required>
+        <br><br>
+
+        <!-- Eingabe für die Beschreibung -->
+        <label for="beschreibung">Beschreibung:</label>
+        <textarea id="beschreibung" name="beschreibung" placeholder="Beschreibung" required></textarea>
+        <br><br>
+
+        <!-- Datei-Upload für das Bild -->
+        <label for="file">Bild hochladen:</label>
+        <input type="file" id="file" name="file" accept="image/*" required>
+        <br><br>
+
+        <!-- Sichtbarkeit -->
+        <label for="anzeigen">Sichtbarkeit:</label>
+        <input type="checkbox" id="anzeigen" name="anzeigen" value="true" checked>
+        <span>Aktivieren</span>
+        <br><br>
+
+        <!-- Submit-Button -->
+        <button type="submit">Sondercharakter hinzufügen</button>
+    </form>
+</div>
+<br>
+<h2>Vorhandene Sondercharaktere</h2>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Beschreibung</th>
+        <th>Anzeigen</th>
+        <th>Aktionen</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="sondercharakter : ${sondercharaktere}">
+        <td th:text="${sondercharakter.id}"></td>
+        <td th:text="${sondercharakter.name}"></td>
+        <td th:text="${sondercharakter.beschreibung}"></td>
+        <td th:text="${sondercharakter.anzeigen ? 'Ja' : 'Nein'}"></td>
+        <td>
+            <!-- Umschalten der Sichtbarkeit -->
+            <form th:action="@{'/sondercharakter/' + ${sondercharakter.id} + '/toggle_anzeigen'}" method="post">
+                <button type="submit" th:text="${sondercharakter.anzeigen ? 'Ausblenden' : 'Anzeigen'}"></button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<br>
+<!-- Link zurück zum Event -->
+<a th:href="@{'/event_edit/' + ${event.id}}" class="btn-back">Zurück</a>
+
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <title>List of Organisations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .table-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 600px;
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+        }
+        button, .btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+        }
+        button:hover, .btn:hover {
+            background-color: #0056b3;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        form {
+            display: inline;
+        }
+    </style>
+</head>
+<body>
+<div class="table-container">
+    <h1>List of Organisations</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="org : ${organisations}">
+            <td th:text="${org.id}"></td>
+            <td th:text="${org.name}"></td>
+            <td th:text="${org.status}"></td>
+            <td>
+                <div class="btn-container">
+                    <a th:href="@{'/organisation_edit/' + ${org.id}}" class="btn" sec:authorize="hasAnyRole('ADMIN')">Edit</a>
+                    <a th:href="@{'/organisation_view/' + ${org.id}}" class="btn">View</a>
+                    <form th:action="@{'/delete-organisation/' + ${org.id}}" method="post" sec:authorize="hasAnyRole('ADMIN')">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <a th:href="@{'/register_organisation'}" class="btn">
+        Register New Organisation
+    </a>
+</div>
+</body>
+</html>

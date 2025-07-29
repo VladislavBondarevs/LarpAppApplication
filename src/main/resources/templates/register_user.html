@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .form-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 350px;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+            text-align: left;
+        }
+        input {
+            width: calc(100% - 16px);
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            display: block;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px;
+            margin-top: 20px;
+            width: 100%;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        p, div {
+            margin-top: 15px;
+            text-align: center;
+        }
+        .success-message {
+            color: green;
+            font-weight: bold;
+        }
+        .error-message {
+            color: red;
+            font-weight: bold;
+        }
+        .form-footer {
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <div th:if="${param.success}">
+        <div class="success-message">
+            <p>Registration Successful!</p>
+        </div>
+    </div>
+    <h2>Registration</h2>
+    <form th:action="@{/register_user}" method="post" enctype="multipart/form-data" th:object="${userDto}">
+    <label for="username">Username:</label>
+        <input th:field="*{username}" type="text" id="username" name="username" placeholder="Enter your Username" required>
+        <div th:if="${usernameError}" th:text="${usernameError}" class="error-message"></div>
+
+        <label for="password">Password:</label>
+        <input th:field="*{password}" type="password" id="password" name="password" placeholder="Enter your Password" required>
+
+        <label for="email">Email:</label>
+        <input th:field="*{email}" type="email" id="email" name="email" placeholder="Enter your Email" required>
+
+        <label for="mainImage">Main Image:</label>
+        <input type="file" id="mainImage" name="mainImage" accept="image/*" required>
+        <br />
+
+        <button type="submit">Register</button>
+    </form>
+    <div>
+        <span th:if="${Userexist}" class="error-message">Username is Taken</span>
+    </div>
+    <div>
+        <span class="form-footer">Already have an account? <a th:href="@{/login}">Login</a> here.</span>
+    </div>
+    <div th:if="${param.success}">
+        <p style="color: green;">✅ Registration successful!</p>
+    </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Event bearbeiten</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 50%;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h1, h2 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+            text-align: left;
+        }
+        input, textarea, select {
+            width: calc(100% - 16px);
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            display: block;
+        }
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        button, .btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            width: 160px;
+            text-align: center;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        button:hover, .btn:hover {
+            background-color: #0056b3;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        .link-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        img {
+            max-width: 100px;
+            height: auto;
+
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Event Bezeichnung: <span th:text="${event.bezeichnung}"></span></h2>
+
+    <!-- Event bearbeiten form -->
+    <form th:action="@{/event_edit/{id}(id=${event.id})}" method="post">
+        <label for="bezeichnung">Bezeichnung:</label>
+        <input type="text" id="bezeichnung" name="bezeichnung" th:value="${event.bezeichnung}" required>
+
+        <label for="beschreibung">Beschreibung:</label>
+        <textarea id="beschreibung" name="beschreibung" th:text="${event.beschreibung}" required></textarea>
+
+        <label for="startdatum">Startdatum:</label>
+        <input type="date" id="startdatum" name="startdatum">
+
+        <label for="enddatum">Enddatum:</label>
+        <input type="date" id="enddatum" name="enddatum">
+
+        <label for="typ">Typ:</label>
+        <input type="text" id="typ" name="typ" th:value="${event.typ}" required>
+
+        <label for="zeitspanne">Zeitspanne:</label>
+        <input type="text" id="zeitspanne" name="zeitspanne" th:value="${event.zeitspanne}" required>
+
+        <label for="genre">Genre:</label>
+        <input type="text" id="genre" name="genre" th:value="${event.genre}" required>
+
+        <button type="submit" class="btn">Speichern</button>
+    </form>
+</div>
+
+<div class="container">
+    <h2>Location ändern</h2>
+    <form th:action="@{/event_edit/{id}/location(id=${event.id})}" method="post">
+        <label for="location">Location:</label>
+        <select id="location" name="locationId" required>
+            <option value="none" th:selected="${event.location == null}">Keine</option>
+            <option th:each="loc : ${locations}" th:value="${loc.id}" th:text="${loc.name}" th:selected="${loc.id == event.location?.id}"></option>
+        </select>
+        <button type="submit" class="btn">Location aktualisieren</button>
+    </form>
+</div>
+
+<div class="btn-container">
+    <a th:href="@{'/event_edit/' + ${event.id} + '/add_fraktion'}" class="btn">Fraktion hinzufügen</a>
+    <a th:href="@{'/event_edit/' + ${event.id} + '/add_unit'}" class="btn">Unit hinzufügen</a>
+    <a th:href="@{'/event_edit/' + ${event.id} + '/add_sondercharakter'}" class="btn">Sondercharakter hinzufügen</a>
+</div>
+
+<div class="container">
+    <h2>Details</h2>
+    <div class="btn-container">
+        <a th:href="@{'/event_edit/' + ${event.id} + '/fraktion_info'}" class="btn">Fraktion Info</a>
+        <a th:href="@{'/event_edit/' + ${event.id} + '/sondercharakter_info'}" class="btn">Sondercharakter Info</a>
+    </div>
+</div>
+
+<div class="container">
+    <h2>Benutzer manuell zum Event hinzufügen</h2>
+    <form th:action="@{/event_edit/{id}/add_user_manual(id=${event.id})}" method="post">
+        <label for="username">Benutzername:</label>
+        <input type="text" id="username" name="username" placeholder="Benutzername eingeben" required>
+        <button type="submit" class="btn">Hinzufügen</button>
+    </form>
+</div>
+<a th:href="@{'/event_list'}" class="btn">Zurück zur Liste</a>
+</body>
+</html>

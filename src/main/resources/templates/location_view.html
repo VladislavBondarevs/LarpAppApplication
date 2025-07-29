@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+  <meta charset="UTF-8">
+  <title>Location Details</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        margin: 0;
+
+    }
+    .container {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        width: 50%;
+        text-align: center;
+        overflow-x: auto;
+    }
+    h1, h2 {
+        margin-bottom: 15px;
+        color: #333;
+    }
+    table {
+        width: 100%;
+       table-layout: auto;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+        word-wrap: break-word;
+    }
+    th {
+        background-color: #007bff;
+        color: white;
+    }
+    button, .btn {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 12px;
+        margin-top: 20px;
+        width: 100%;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+    button:hover, .btn:hover {
+        background-color: #0056b3;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Location Details</h1>
+  <table>
+    <tr>
+      <th>ID:</th>
+      <td th:text="${location.id}"></td>
+    </tr>
+    <tr>
+      <th>Name:</th>
+      <td th:text="${location.name}"></td>
+    </tr>
+    <tr>
+      <th>Beschreibung:</th>
+      <td th:text="${location.beschreibung}"></td>
+    </tr>
+    <tr>
+      <th>Adresse:</th>
+      <td th:text="${location.adresse}"></td>
+    </tr>
+    <tr>
+      <th>Anfahrt:</th>
+      <td th:text="${location.anfahrt}"></td>
+    </tr>
+    <tr>
+      <th>Unterkunft:</th>
+      <td th:text="${location.unterkunft}"></td>
+    </tr>
+    <tr>
+      <th>Bild:</th>
+      <td><img th:src="@{'/' + ${location.photoPath}}" alt="Location Image"></td>
+    </tr>
+  </table>
+
+  <h2>Gallery</h2>
+  <div class="gallery">
+    <div th:each="photo : ${bildergallerie}">
+      <img th:src="@{'/' + ${photo}}" alt="Gallery Photo" />
+    </div>
+  </div>
+  <br>
+  <a th:href="@{'/location_list'}" class="btn">Zurück zur Liste</a>
+</div>
+</body>
+</html>

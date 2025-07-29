@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Register Organisation</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+    }
+    .form-container {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        width: 400px;
+        text-align: center;
+    }
+    h2 {
+        margin-bottom: 15px;
+        color: #333;
+    }
+    label {
+        display: block;
+        margin-top: 10px;
+        font-weight: bold;
+        text-align: left;
+    }
+    input, textarea {
+        width: calc(100% - 16px);
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        display: block;
+    }
+    button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 12px;
+        margin-top: 20px;
+        width: 100%;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+    button:hover {
+        background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+<div class="form-container">
+  <h2>Register Organisation</h2>
+  <form th:action="@{/register_organisation}" method="post" enctype="multipart/form-data" th:object="${organisation}">
+    <label for="name">Organisation Name:</label>
+    <input th:field="*{name}" type="text" id="name" placeholder="Enter Organisation Name" required>
+
+    <label for="beschreibung">Description (max 255 characters):</label>
+    <textarea th:field="*{beschreibung}" id="beschreibung" maxlength="255" required></textarea>
+    <div th:if="${#fields.hasErrors('beschreibung')}" th:errors="*{beschreibung}" style="color: red;"></div>
+
+    <label for="kontakt">Contact:</label>
+    <input th:field="*{kontakt}" type="text" id="kontakt" placeholder="Enter Contact" required>
+
+    <label for="mainImage">Main Image:</label>
+    <input type="file" id="mainImage" name="mainImage" accept="image/*" required>
+
+    <label for="socialmedia">Social Media:</label>
+    <input th:field="*{socialmedia}" type="text" id="socialmedia" placeholder="Enter Social Media Links">
+
+    <button type="submit">Register</button>
+  </form>
+</div>
+</body>
+</html>

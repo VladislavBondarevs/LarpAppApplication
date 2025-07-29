@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Unit Info</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 60%;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+        }
+        h1, h2 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+         img {
+         display: block;
+         margin: auto;
+         max-width: 100%;
+         max-height: 100px;
+         object-fit: contain;
+        }
+   .btn-back {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    width: 200px;
+    text-align: center;
+    display: block;
+    margin: 20px auto 0;
+}
+        button:hover, .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Unit Informationen</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Kapazität</th>
+            <th>Belegte Plätze</th>
+            <th>Foto</th>
+            <th>Beschreibung</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td th:text="${unit.id}"></td>
+            <td th:text="${unit.name}"></td>
+            <td th:text="${unit.capacity}"></td>
+            <td th:text="${occupiedSeats}"></td>
+            <td>
+                <img th:src="@{'/' + ${unit.photoPath}}" alt="Unit Foto" />
+            </td>
+            <td th:text="${unit.beschreibung}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h2>Mitglieder</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Benutzername</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${unitUsers}">
+            <td th:text="${user.username}"></td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(unitUsers)}">
+            <td colspan="1" style="text-align: center;">Keine Mitglieder vorhanden.</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a th:href="@{'/event_view/' + ${event.id}}" class="btn-back">Zurück</a>
+</div>
+</body>
+</html>
